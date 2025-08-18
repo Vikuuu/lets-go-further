@@ -52,3 +52,8 @@ func (app *application) failedValidationResponse(
 ) {
 	app.errorResponse(w, r, http.StatusUnprocessableEntity, errors)
 }
+
+func (app *application) editConflictResponse(w http.ResponseWriter, r *http.Request) {
+	message := "unable to udpate the resource due to edit conflict, please try again"
+	app.errorResponse(w, r, http.StatusConflict, message)
+}
