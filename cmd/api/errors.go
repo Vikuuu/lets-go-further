@@ -6,7 +6,10 @@ import (
 )
 
 func (app *application) logError(r *http.Request, err error) {
-	app.logger.Println(err)
+	app.logger.PrintError(err, map[string]string{
+		"request_method": r.Method,
+		"request_url":    r.URL.String(),
+	})
 }
 
 func (app *application) errorResponse(
@@ -19,7 +22,7 @@ func (app *application) errorResponse(
 
 	err := app.writeJSON(w, status, env, nil)
 	if err != nil {
-		app.logger.Println(err)
+		app.logError(r, err)
 		w.WriteHeader(http.StatusInternalServerError)
 	}
 }
